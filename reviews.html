@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews | purekid! Creative Graphic Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: #fcfcfc; font-family: 'Inter', sans-serif; 
+            color: #000; height: 100vh; width: 100vw; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+
+        /* 2. HEADER & FOOTER UI */
+        header, footer { 
+            position: fixed; left: 0; width: 100%; display: flex; 
+            justify-content: center; padding: 0 60px; z-index: 9000; pointer-events: none; 
+            background: rgba(252, 252, 252, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        }
+        header { 
+            top: 0; 
+            padding-top: 50px; 
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        } 
+        footer { 
+            bottom: 0; 
+            padding-top: 20px; 
+            padding-bottom: 50px;
+            border-top: 1px solid rgba(0, 0, 0, 0.03);
+        }
+        .ui-constraint { width: 100%; max-width: 1800px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .header-logo { pointer-events: auto; cursor: pointer; text-decoration: none; }
+        .header-logo img { height: 42px; display: block; transition: 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        
+        /* RESTRICT LOGO HOVER ROTATION TO DESKTOP ONLY */
+        @media (hover: hover) {
+            .header-logo:hover img { transform: scale(1.15) rotate(360deg); }
+        }
+
+        nav { display: flex; gap: 30px; pointer-events: auto; }
+        nav .nav-link { 
+            font-family: 'Montserrat', sans-serif; text-decoration: none; color: #000; 
+            font-size: 0.85rem; font-weight: 600; position: relative; transition: 0.3s;
+        }
+        nav .nav-link:hover {
+            background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        nav .nav-link.active::after { 
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; 
+            height: 3px; background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853); border-radius: 2px; 
+        }
+
+        .footer-socials { pointer-events: auto; display: flex; align-items: center; }
+        .footer-socials .nav-link { 
+            font-family: 'Montserrat', sans-serif; text-decoration: none; color: #000; 
+            font-size: 0.75rem; font-weight: 600; transition: 0.3s; margin-left: 30px;
+        }
+        .footer-socials .nav-link:not(.cta-link):hover { opacity: 0.6; }
+        
+        .footer-socials .cta-link { font-family: 'Montserrat', sans-serif; font-weight: 900 !important; display: inline-block; transition: 0.3s; color: #000; }
+        .footer-socials .cta-link:hover { opacity: 1 !important; transform: translateY(-2px); }
+
+        .copyright { font-family: 'Montserrat'; font-size: 0.7rem; font-weight: 700; color: #999; pointer-events: auto; }
+
+        /* INTERACTIVE MOBILE ICON TOGGLE */
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 28px;
+            height: 22px;
+            position: relative;
+            z-index: 10100;
+            pointer-events: auto;
+        }
+        .mobile-nav-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+            border-radius: 2px;
+            position: absolute;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .mobile-nav-toggle span:nth-child(1) { top: 0; }
+        .mobile-nav-toggle span:nth-child(2) { top: 9px; }
+        .mobile-nav-toggle span:nth-child(3) { top: 18px; }
+
+        .mobile-nav-toggle.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        .mobile-nav-toggle.open span:nth-child(2) { opacity: 0; transform: translateX(10px); }
+        .mobile-nav-toggle.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+        /* MICRO-DROPDOWN MENU SYSTEM */
+        .mobile-dropdown {
+            position: fixed;
+            top: 85px; 
+            right: 30px; 
+            width: 180px; 
+            background-color: rgba(252, 252, 252, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 10050; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .mobile-dropdown.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .mobile-dropdown .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            text-decoration: none;
+            color: #000;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            transition: 0.2s;
+        }
+        .mobile-dropdown .nav-link:hover, .mobile-dropdown .nav-link.active {
+            background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* MOBILE VECTOR FOOTER LAYER */
+        .mobile-footer-icons { display: none; gap: 16px; align-items: center; pointer-events: auto; }
+        .mobile-footer-icons a { display: flex; align-items: center; justify-content: center; transition: 0.3s; color: #000; text-decoration: none; }
+        .mobile-contra-txt {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: -0.2px;
+            line-height: 1;
+        }
+
+        /* 3. PAGE CONTENT LAYOUT (FIXED DESKTOP SCROLL ENGINE) */
+        .page-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 160px 60px 140px 60px;
+            display: block;
+        }
+
+        .reviews-header {
+            text-align: center;
+            margin-bottom: 50px;
+            margin-top: 20px;
+        }
+        .reviews-header h1 {
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 3.2rem;
+            text-transform: uppercase; letter-spacing: -1.5px;
+        }
+        .reviews-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 15px;
+        }
+        .accent-gradient { background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* 4. REVIEWS GRID SYSTEM */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+        }
+
+        /* CARD FRAME WITH PERMANENT ACCENT GRADIENT BORDER */
+        .review-card {
+            background-color: #ffffff;
+            border: 1.5px solid transparent; 
+            border-radius: 18px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            
+            background-image: linear-gradient(#ffffff, #ffffff), linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        /* REVIEWS CONTENT CLEAN TYPOGRAPHY SYSTEM */
+        .review-text {
+            width: 100%;
+            margin-bottom: 25px;
+        }
+        
+        .review-text .text-content {
+            width: 100%;
+            text-align: justify;
+            text-justify: inter-word;
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* CLIENT PROFILE BLOCK WITH ACCENT DIVIDER STRIP */
+        .review-client {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-top: 18px;
+            width: 100%;
+            
+            border-top: 1.5px solid;
+            border-image: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853) 1;
+        }
+
+        .client-info h3 {
+            font-family: 'Montserrat';
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #000;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .client-info p {
+            font-size: 0.72rem;
+            color: #777;
+            font-weight: 600;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+
+        /* 5. ULTRA-RESPONSIVE ENGINE SYSTEM */
+        @media (max-width: 768px) {
+            header { 
+                top: 0; padding: 24px 30px 18px 30px; 
+                border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+            }
+            footer { 
+                bottom: 0; padding: 18px 30px 24px 30px; 
+                border-top: 1px solid rgba(0, 0, 0, 0.03);
+            }
+
+            /* REMOVE NAV TRANSITIONS TO REMOVE STICKY HIT STATES ON MOBILE */
+            .header-logo img { transition: none; }
+
+            nav { display: none; }
+            .mobile-nav-toggle { display: block; }
+            .footer-socials { display: none; }
+            .mobile-footer-icons { display: flex; }
+            
+            .copyright { font-family: 'Montserrat', sans-serif; font-size: 0.52rem; opacity: 0.5; }
+
+            .page-content { 
+                padding: 120px 24px 120px 24px; 
+            }
+            
+            .reviews-header { margin-top: 10px; margin-bottom: 35px; }
+            .reviews-header h1 { font-size: 2.1rem; letter-spacing: -0.8px; }
+            .reviews-subtitle { font-size: 0.72rem; letter-spacing: 1px; }
+
+            .reviews-grid { grid-template-columns: 1fr; gap: 20px; padding-bottom: 40px; }
+            .review-card { padding: 30px 20px; }
+            .review-text .text-content { text-align: left; font-size: 0.88rem; line-height: 1.65; }
+        }
+
+        /* TABLET & INTERMEDIATE MEDIA VIEWPORTS */
+        @media (min-width: 769px) and (max-width: 1100px) {
+            header { 
+                top: 0; padding: 30px 40px 20px 40px;
+            }
+            footer { 
+                bottom: 0; padding: 20px 40px 30px 40px;
+            }
+            
+            /* REMOVE NAV TRANSITIONS ON TABLETS */
+            .header-logo img { transition: none; }
+
+            .page-content { 
+                padding: 160px 40px 140px 40px;
+            }
+            .reviews-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; padding-bottom: 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="ui-constraint">
+            <a href="index.html" class="header-logo"><img src="purekid! LogoP.png" alt="purekid!"></a>
+            <nav>
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="work.html" class="nav-link">Work</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="aboutme.html" class="nav-link">About Me</a>
+                <a href="reviews.html" class="nav-link active">Reviews</a>
+            </nav>
+            <button class="mobile-nav-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-dropdown" id="mobile-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="work.html" class="nav-link">Work</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="aboutme.html" class="nav-link">About Me</a>
+        <a href="reviews.html" class="nav-link active">Reviews</a>
+    </div>
+
+    <div class="page-content">
+        <div class="reviews-header">
+            <h1>Client <span class="accent-gradient">Reviews</span></h1>
+            <p class="reviews-subtitle">A few featured feedback from a long list of happy and convinced clients</p>
+        </div>
+
+        <main class="reviews-grid">
+            
+            <div class="review-card">
+                <div class="review-text">
+                    <p class="text-content">I've known Sola personally, and his talent in graphic design is impossible to ignore. A great example of his skill was when he designed my campaign graphics during my contest for a political post in the university. The designs were visually striking, well structured, and communicated my message clearly. They stood out and received great feedback. Beyond that, Sola consistently turns ideas into meaningful visuals with creativity and precision. He takes his craft seriously, and it shows in the quality of his work. Any individual, brand, or organization looking for design work that leaves a strong and lasting impression will find him a valuable choice.</p>
+                </div>
+                <div class="review-client">
+                    <div class="client-info">
+                        <h3>Akintan Temitayo</h3>
+                        <p>C.E.O, Dyron Aurum</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-text">
+                    <p class="text-content">I've worked with a few designers before, but you are different. You actually listen, care about the project, and go above and beyond to make it look right. Creative Empire looks 100x better because of your design and edits work. Grateful to have you on my team man.</p>
+                </div>
+                <div class="review-client">
+                    <div class="client-info">
+                        <h3>Timopraise</h3>
+                        <p>GOSPEL MINISTER</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-text">
+                    <p class="text-content">He’s Purekid for a reason✨ “Pure” designs with creativity from a “kid” like innocent inspiration. Purekid’s designs are top notch and his doggedness and dedication to prompt and jaw dropping designs is something to be studied. A trial with purekid will leave you coming back for more and even more. Purekid is him, summarily.</p>
+                </div>
+                <div class="review-client">
+                    <div class="client-info">
+                        <h3>Temitope Eniola</h3>
+                        <p>C.E.O, CORPORATE CLOSET</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-text">
+                    <p class="text-content">Working with you brother was an amazing experience. You paid attention to every detail and delivered the design perfectly beyond my expectations. Your creativity, patience, and professionalism truly stood out throughout the project. I’m very satisfied with the final result and I won’t hesitate to recommend you for any design work. Keep up the great work, brother!</p>
+                </div>
+                <div class="review-client">
+                    <div class="client-info">
+                        <h3>Babalola Ayomikun</h3>
+                        <p>Manager, Ade Super Hotels</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-text">
+                    <p class="text-content">I brought an idea of mixing Arabic and English words together, you turned the concept into a masterpiece with your creativity. I never believed the idea will turn out so great and I duly appreciate you for your effort. Truly you're a genius when it comes to creating concepts. SABR is still blooming and thank you for that.</p>
+                </div>
+                <div class="review-client">
+                    <div class="client-info">
+                        <h3>Loseyi</h3>
+                        <p>Photographer</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-text">
+                    <p class="text-content">Working with Purekid was an outstanding experience from start to finish. He handled my birthday flyers, baby christening designs, and job adverts for my business with an incredible level of professionalism and creative insight. The final work was visually cohesive, clean, and perfectly aligned with what I wanted. On top of that, everything was delivered in high resolution and perfectly formatted for both print and digital use without needing any corrections. I recommend Purekid without reservation for any project requiring precision, a client focused approach, and real creativity.</p>
+                </div>
+                <div class="review-client">
+                    <div class="client-info">
+                        <h3>Thomas J. Friday</h3>
+                        <p>Manager, Yabola Ventures Enterprises</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer>
+        <div class="ui-constraint">
+            <div class="copyright">© 2026 PUREKID DESIGNS</div>
+            <div class="footer-socials">
+                <a href="https://www.tiktok.com/@purekid" target="_blank" class="nav-link">TIKTOK</a>
+                <a href="https://wa.me/2347039864664" target="_blank" class="nav-link">WHATSAPP</a>
+                <a href="mailto:purekiddesigns@gmail.com" class="nav-link">EMAIL</a>
+                <a href="https://contra.com/purekiddesigns" target="_blank" class="nav-link cta-link">CONTRA</a>
+            </div>
+            <div class="mobile-footer-icons">
+                <a href="https://www.tiktok.com/@purekid" target="_blank" aria-label="TikTok">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                </a>
+                <a href="https://wa.me/2347039864664" target="_blank" aria-label="WhatsApp">
+                    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+                        <path d="M16 2a13.93 13.93 0 0 0-12.09 20.89l-1.83 6.69 6.84-1.79A13.88 13.88 0 0 0 16 30c7.69 0 14-6.31 14-14S23.69 2 16 2zm0 25.66a11.66 11.66 0 0 1-5.94-1.62l-.42-.25-4.09 1.07 1.1-4-0.27-.43A11.72 11.72 0 1 1 16 27.66zm6.42-8.73c-.35-.18-2.08-1-2.4-.12-.32-.11-.56-.18-.81.18s-.94 1.17-1.15 1.4-.42.25-.77.07a9.75 9.75 0 0 1-2.88-1.78 10.77 10.77 0 0 1-2-2.48c-.21-.36 0-.55.15-.73l.47-.55c.18-.21.25-.36.36-.57a.64.64 0 0 0 0-.57c-.07-.18-.57-1.37-.78-1.88-.2-.5-.41-.42-.56-.43h-.48a1 1 0 0 0-.68.32 2.87 2.87 0 0 0-.9 2.13 5 5 0 0 0 1 2.65 11.39 11.39 0 0 0 4.35 3.85c1 .43 1.84.69 2.48.89a6 6 0 0 0 2.75.17 3.39 3.39 0 0 0 2.22-1.57 2.77 2.77 0 0 0 .19-1.57c-.06-.11-.23-.18-.58-.36z"/>
+                    </svg>
+                </a>
+                <a href="mailto:purekiddesigns@gmail.com" aria-label="Email">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </a>
+                <a href="https://contra.com/purekiddesigns" target="_blank" aria-label="Contra" class="mobile-contra-txt">
+                    CONTRA
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const dropdownLinks = mobileMenu.querySelectorAll('.nav-link');
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            menuToggle.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+        });
+
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            const isClickInsideMenu = mobileMenu.contains(e.target);
+            const isClickInsideToggle = menuToggle.contains(e.target);
+            
+            if (mobileMenu.classList.contains('open') && !isClickInsideMenu && !isClickInsideToggle) {
+                menuToggle.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                menuToggle.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>

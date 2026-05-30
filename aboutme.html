@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | purekid! Creative Graphic Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: #fcfcfc; font-family: 'Inter', sans-serif; 
+            color: #000; height: 100vh; width: 100vw; overflow: hidden; /* Strict viewport lock */
+            display: flex; flex-direction: column;
+        }
+
+        /* 2. HEADER & FOOTER UI */
+        header { 
+            position: fixed; top: 0; left: 0; width: 100%; display: flex; 
+            justify-content: center; padding: 50px 60px 20px 60px; z-index: 9000; pointer-events: none;
+        }
+        
+        footer { 
+            position: fixed; bottom: 0; left: 0; width: 100%; display: flex; 
+            justify-content: center; padding: 40px 60px 50px 60px; z-index: 9000; pointer-events: none;
+        }
+        
+        .ui-constraint { width: 100%; max-width: 1800px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .header-logo { pointer-events: auto; cursor: pointer; text-decoration: none; }
+        .header-logo img { height: 42px; display: block; transition: 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        
+        /* ONLY APPLY LOGO HOVER ON DESKTOP POINTER DEVICES */
+        @media (hover: hover) {
+            .header-logo:hover img { transform: scale(1.15) rotate(360deg); }
+        }
+
+        nav { display: flex; gap: 30px; pointer-events: auto; }
+        nav .nav-link { 
+            font-family: 'Montserrat', sans-serif; text-decoration: none; color: #000; 
+            font-size: 0.85rem; font-weight: 600; position: relative; transition: 0.3s;
+        }
+        nav .nav-link:hover {
+            background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        nav .nav-link.active::after { 
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; 
+            height: 3px; background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853); border-radius: 2px; 
+        }
+
+        .footer-socials { pointer-events: auto; display: flex; align-items: center; }
+        .footer-socials .nav-link { 
+            font-family: 'Montserrat', sans-serif; text-decoration: none; color: #000; 
+            font-size: 0.75rem; font-weight: 600; transition: 0.3s; margin-left: 30px;
+        }
+        .footer-socials .nav-link:not(.cta-link):hover { opacity: 0.6; }
+        .footer-socials .cta-link { font-weight: 800; display: inline-block; transition: 0.3s; color: #000; }
+        .footer-socials .cta-link:hover { opacity: 1; transform: translateY(-2px); }
+        .copyright { font-family: 'Montserrat'; font-size: 0.7rem; font-weight: 700; color: #999; pointer-events: auto; }
+
+        /* INTERACTIVE MOBILE ICON TOGGLE */
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 28px;
+            height: 22px;
+            position: relative;
+            z-index: 10100;
+            pointer-events: auto;
+        }
+        .mobile-nav-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+            border-radius: 2px;
+            position: absolute;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .mobile-nav-toggle span:nth-child(1) { top: 0; }
+        .mobile-nav-toggle span:nth-child(2) { top: 9px; }
+        .mobile-nav-toggle span:nth-child(3) { top: 18px; }
+
+        .mobile-nav-toggle.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        .mobile-nav-toggle.open span:nth-child(2) { opacity: 0; transform: translateX(10px); }
+        .mobile-nav-toggle.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+        /* MICRO-DROPDOWN MENU SYSTEM */
+        .mobile-dropdown {
+            position: fixed;
+            top: 85px; 
+            right: 30px; 
+            width: 180px; 
+            background-color: rgba(252, 252, 252, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 10050; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .mobile-dropdown.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .mobile-dropdown .nav-link {
+            font-family: 'Montserrat', sans-serif;
+            text-decoration: none;
+            color: #000;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            transition: 0.2s;
+        }
+        .mobile-dropdown .nav-link:hover, .mobile-dropdown .nav-link.active {
+            background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* MOBILE VECTOR FOOTER LAYER */
+        .mobile-footer-icons { display: none; gap: 16px; align-items: center; pointer-events: auto; }
+        .mobile-footer-icons a { display: flex; align-items: center; justify-content: center; transition: 0.3s; color: #000; text-decoration: none; }
+        .mobile-contra-txt {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: -0.2px;
+            line-height: 1;
+        }
+
+        /* 3. PAGE CONTENT LAYOUT */
+        .page-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 90px 60px 100px 60px;
+            max-width: 1500px;
+            width: 100%;
+            margin: 0 auto;
+            z-index: 10;
+        }
+
+        /* Centralized Header Section */
+        .about-header {
+            margin-bottom: 15px;
+            text-align: center;
+            width: 100%;
+        }
+        .about-header h1 {
+            font-family: 'Montserrat'; font-weight: 800; font-size: 3.2rem;
+            text-transform: uppercase; letter-spacing: -1.5px;
+        }
+        .accent-gradient { background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* 4. TWO-COLUMN EDITORIAL SPLIT */
+        .about-wrapper {
+            display: flex;
+            width: 100%;
+            gap: 80px;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 18px;
+        }
+
+        /* LEFT SIDE: STORY */
+        .about-text-side {
+            flex: 1.2;
+        }
+        .about-text-side h2 {
+            font-family: 'Montserrat'; font-weight: 800; font-size: 1.35rem;
+            letter-spacing: 1px; color: #111; margin-bottom: 20px;
+        }
+        
+        .about-text-side p.spaced-block {
+            margin-bottom: 14px;
+        }
+        
+        .about-text-side p {
+            font-size: 0.95rem; color: #444; line-height: 1.75;
+            font-weight: 500; max-width: 680px;
+            text-align: justify;
+        }
+        .about-text-side p strong { color: #000; font-weight: 600; }
+
+        /* RIGHT SIDE: DYNAMIC FLIPPING CONTAINER */
+        .about-image-side {
+            flex: 0.8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1500px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            transform-style: preserve-3d;
+            animation: autoFlipCardDelay 20s infinite ease-in-out; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 10-SECOND DELAY TIMELINE */
+        @keyframes autoFlipCardDelay {
+            0%, 45% { transform: rotateY(0deg); }       
+            50%, 95% { transform: rotateY(180deg); }   
+            100% { transform: rotateY(360deg); }       
+        }
+
+        /* Base card layout specs */
+        .card-face {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 16px;
+            overflow: hidden;
+            display: block;
+            
+            border: 1.5px solid transparent;
+            background-image: linear-gradient(#fcfcfc, #fcfcfc), linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        /* Clickable images baseline setup without layout shifts */
+        .card-face img {
+            width: auto;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+            cursor: pointer; /* Subtle indicator for naturally curious users */
+        }
+
+        /* FRONT CARD ASSET RULES (1.png) */
+        .card-front img {
+            max-width: 320px;
+            max-height: 430px;
+        }
+
+        /* BACK CARD ASSET RULES (2.png) */
+        .card-back img {
+            max-width: 320px;
+            max-height: 380px; 
+        }
+
+        /* FRONT SIDE CONFIG */
+        .card-front {
+            position: relative;
+            transform: rotateY(0deg);
+            z-index: 2;
+        }
+
+        /* BACK SIDE CONFIG */
+        .card-back {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateY(180deg);
+        }
+
+        /* 5. HIDDEN UI ZOOM POPUP (MODAL) */
+        .pure-zoom-modal {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9); /* Deep matte dim backdrop */
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 10000;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        /* ACTIVE VISIBLE STATE */
+        .pure-zoom-modal.active {
+            opacity: 1; pointer-events: auto;
+        }
+
+        .zoom-content {
+            display: flex; flex-direction: column; align-items: center;
+            transform: scale(0.8) translateY(50px);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Portfolio zoom lift style */
+        }
+
+        /* ACTIVE VISIBLE STATE ZOOM LIFT */
+        .pure-zoom-modal.active .zoom-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .zoom-content img {
+            max-width: 90vw; max-height: 85vh; 
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            cursor: default;
+        }
+
+        /* RESPONSIVE STYLING */
+        @media (max-width: 768px) {
+            body { overflow: hidden; height: 100vh; width: 100vw; }
+            
+            header { 
+                top: 0; padding: 24px 30px 18px 30px; 
+                background: rgba(252, 252, 252, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+            }
+            footer { 
+                bottom: 0; padding: 18px 30px 24px 30px; 
+                background: rgba(252, 252, 252, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+                border-top: 1px solid rgba(0, 0, 0, 0.03);
+            }
+
+            /* CLEAN UP LOGO MOBILE TRANSITIONS */
+            .header-logo img { transition: none; }
+
+            nav { display: none; }
+            .mobile-nav-toggle { display: block; }
+            .footer-socials { display: none; }
+            .mobile-footer-icons { display: flex; }
+            
+            .copyright { font-family: 'Montserrat', sans-serif; font-size: 0.52rem; opacity: 0.5; }
+
+            .page-content { 
+                position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                overflow-y: auto; -webkit-overflow-scrolling: touch; 
+                padding: 120px 24px 120px 24px; display: block; 
+            }
+            
+            /* ADJUSTED HEADER SPACING FOR MOBILE */
+            .about-header { margin-top: 10px; margin-bottom: 45px; }
+            .about-header h1 { font-size: 2.1rem; letter-spacing: -0.8px; }
+
+            /* ADJUSTED WRAPPER GAP FOR MOBILE */
+            .about-wrapper { flex-direction: column-reverse; gap: 55px; margin-top: 0; }
+            .about-text-side { text-align: center; width: 100%; }
+            
+            /* JUSTIFIED BODY TEXT FOR MOBILE */
+            .about-text-side p { 
+                margin-left: auto; 
+                margin-right: auto; 
+                text-align: justify; 
+                font-size: 0.88rem; 
+                line-height: 1.65; 
+            }
+            
+            .card-front img { max-width: 250px; max-height: 335px; }
+            .card-back img { max-width: 250px; max-height: 295px; }
+        }
+
+        @media (min-width: 769px) and (max-width: 1100px) {
+            body { overflow: hidden; height: 100vh; width: 100vw; }
+            header { 
+                top: 0; padding: 30px 40px 20px 40px;
+                background: rgba(252, 252, 252, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            }
+            footer { 
+                bottom: 0; padding: 20px 40px 30px 40px;
+                background: rgba(252, 252, 252, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            }
+            
+            /* RESET LOGO SCALING ON TABLET TOUCH DEVICES */
+            .header-logo img { transition: none; }
+
+            .page-content { 
+                position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                overflow-y: auto; -webkit-overflow-scrolling: touch;
+                padding: 160px 40px 140px 40px; display: block;
+            }
+            .about-wrapper { flex-direction: column-reverse; gap: 50px; margin-top: 0; }
+            .about-text-side { text-align: center; width: 100%; }
+            .about-text-side p { margin-left: auto; margin-right: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="ui-constraint">
+            <a href="index.html" class="header-logo"><img src="purekid! LogoP.png" alt="purekid! logo"></a>
+            <nav>
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="work.html" class="nav-link">Work</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="aboutme.html" class="nav-link active">About Me</a>
+                <a href="reviews.html" class="nav-link">Reviews</a>
+            </nav>
+            <button class="mobile-nav-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-dropdown" id="mobile-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="work.html" class="nav-link">Work</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="aboutme.html" class="nav-link active">About Me</a>
+        <a href="reviews.html" class="nav-link">Reviews</a>
+    </div>
+
+    <div class="page-content">
+        <div class="about-header">
+            <h1>About <span class="accent-gradient">Me</span></h1>
+        </div>
+
+        <main class="about-wrapper">
+            <section class="about-text-side">
+                <h2>CREATIVE VISION. INTENTIONAL EXECUTION.</h2>
+                
+                <p class="spaced-block"><strong>I am a Creative Graphic Designer and visual communicator driven by two simple obsessions: a love for design and turning raw ideas into striking visual realities.</strong></p>
+                
+                <p class="spaced-block">
+                    Whether it's creating a luxury brand identity from scratch, designing promotional materials that command immediate attention, or turning raw, unique concepts into quality digital artwork, my goal is always the same: to make your vision impossible to ignore.
+                    With a portfolio spanning various projects, I’ve learned that great design isn't just about looking good. It’s about establishing credibility and giving your business the professional edge it needs to stand out.
+                    Every project is a direct collaboration. I work closely with my clients to take abstract ideas and refine them into sharp, quality digital assets.
+                </p>
+                
+                <p><strong>You bring the concept, I bring the visual strategy and the execution.</strong></p>
+            </section>
+
+            <section class="about-image-side">
+                <div class="flip-card-inner">
+                    <div class="card-face card-front">
+                        <img src="1.png" alt="purekid! Creative Work Showcase Front" onclick="pureLightbox(this.src)">
+                    </div>
+                    <div class="card-face card-back">
+                        <img src="2.png" alt="purekid! Creative Work Showcase Back" onclick="pureLightbox(this.src)">
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <div class="ui-constraint">
+            <div class="copyright">© 2026 PUREKID DESIGNS</div>
+            <div class="footer-socials">
+                <a href="https://www.tiktok.com/@purekid" target="_blank" class="nav-link">TIKTOK</a>
+                <a href="https://wa.me/2347039864664" target="_blank" class="nav-link">WHATSAPP</a>
+                <a href="mailto:purekiddesigns@gmail.com" class="nav-link">EMAIL</a>
+                <a href="https://contra.com/purekiddesigns" target="_blank" class="nav-link cta-link">CONTRA</a>
+            </div>
+            <div class="mobile-footer-icons">
+                <a href="https://www.tiktok.com/@purekid" target="_blank" aria-label="TikTok">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                </a>
+                <a href="https://wa.me/2347039864664" target="_blank" aria-label="WhatsApp">
+                    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+                        <path d="M16 2a13.93 13.93 0 0 0-12.09 20.89l-1.83 6.69 6.84-1.79A13.88 13.88 0 0 0 16 30c7.69 0 14-6.31 14-14S23.69 2 16 2zm0 25.66a11.66 11.66 0 0 1-5.94-1.62l-.42-.25-4.09 1.07 1.1-4-0.27-.43A11.72 11.72 0 1 1 16 27.66zm6.42-8.73c-.35-.18-2.08-1-2.4-.12-.32-.11-.56-.18-.81.18s-.94 1.17-1.15 1.4-.42.25-.77.07a9.75 9.75 0 0 1-2.88-1.78 10.77 10.77 0 0 1-2-2.48c-.21-.36 0-.55.15-.73l.47-.55c.18-.21.25-.36.36-.57a.64.64 0 0 0 0-.57c-.07-.18-.57-1.37-.78-1.88-.2-.5-.41-.42-.56-.43h-.48a1 1 0 0 0-.68.32 2.87 2.87 0 0 0-.9 2.13 5 5 0 0 0 1 2.65 11.39 11.39 0 0 0 4.35 3.85c1 .43 1.84.69 2.48.89a6 6 0 0 0 2.75.17 3.39 3.39 0 0 0 2.22-1.57 2.77 2.77 0 0 0 .19-1.57c-.06-.11-.23-.18-.58-.36z"/>
+                    </svg>
+                </a>
+                <a href="mailto:purekiddesigns@gmail.com" aria-label="Email">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </a>
+                <a href="https://contra.com/purekiddesigns" target="_blank" aria-label="Contra" class="mobile-contra-txt">
+                    CONTRA
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="pureZoom" class="pure-zoom-modal" onclick="closePureLightbox()">
+        <div class="zoom-content">
+            <img id="pureTargetImage" src="" alt="Zoomed purekid! Showcase asset">
+        </div>
+    </div>
+
+    <script>
+        // MOBILE TOGGLE SYSTEM ENGINE
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const dropdownLinks = mobileMenu.querySelectorAll('.nav-link');
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            menuToggle.classList.toggle('open');
+            mobileMenu.classList.toggle('open');
+        });
+
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.remove();
+                menuToggle.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (mobileMenu.classList.contains('open') && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                menuToggle.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                menuToggle.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            }
+        });
+
+        // CORE LIGHTBOX SCRIPT INTACT
+        function pureLightbox(imgSrc) {
+            const modal = document.getElementById('pureZoom');
+            const targetImg = document.getElementById('pureTargetImage');
+            
+            targetImg.src = imgSrc; 
+            modal.classList.add('active'); 
+        }
+
+        function closePureLightbox() {
+            const modal = document.getElementById('pureZoom');
+            const targetImg = document.getElementById('pureTargetImage');
+
+            modal.classList.remove('active'); 
+            setTimeout(() => { targetImg.src = ""; }, 500); 
+        }
+
+        document.querySelector('.zoom-content img').addEventListener('click', (e) => {
+            e.stopPropagation(); 
+        });
+    </script>
+
+</body>
+</html>

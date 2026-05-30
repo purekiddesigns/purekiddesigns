@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work | purekid! Creative Graphic Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* 1. RESET & BASE */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    background-color: #fcfcfc; font-family: 'Inter', sans-serif; 
+    color: #000; height: 100vh; width: 100vw; overflow: hidden;
+    display: flex; flex-direction: column;
+}
+
+/* 2. HEADER & FOOTER UI */
+header, footer { 
+    position: fixed; left: 0; width: 100%; display: flex; 
+    justify-content: center; padding: 0 60px; z-index: 9000;
+    background: rgba(252, 252, 252, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    isolation: isolate;
+}
+
+header { 
+    top: 0; 
+    padding-top: 50px; 
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+} 
+footer { 
+    bottom: 0; 
+    padding-top: 20px; 
+    padding-bottom: 50px;
+    border-top: 1px solid rgba(0, 0, 0, 0.03);
+}
+.ui-constraint { width: 100%; max-width: 1800px; display: flex; justify-content: space-between; align-items: center; }
+.header-logo { cursor: pointer; text-decoration: none; }
+.header-logo img { height: 42px; display: block; transition: 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+nav { display: flex; gap: 30px; }
+nav .nav-link { 
+    font-family: 'Montserrat', sans-serif; text-decoration: none; color: #000; 
+    font-size: 0.85rem; font-weight: 600; position: relative; transition: 0.3s;
+}
+nav .nav-link.active { 
+    color: #000;
+}
+nav .nav-link.active::after { 
+    content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; 
+    height: 3px; background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853); border-radius: 2px; 
+}
+
+.footer-socials { display: flex; align-items: center; }
+.footer-socials .nav-link { 
+    font-family: 'Montserrat', sans-serif; text-decoration: none; color: #000; 
+    font-size: 0.75rem; font-weight: 600; transition: 0.3s; margin-left: 30px;
+}
+.footer-socials .cta-link { font-family: 'Montserrat', sans-serif; font-weight: 900 !important; display: inline-block; transition: 0.3s; color: #000; }
+
+.copyright { font-family: 'Montserrat'; font-size: 0.7rem; font-weight: 700; color: #999; }
+
+/* INTERACTIVE MOBILE ICON TOGGLE */
+.mobile-nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 28px;
+    height: 22px;
+    position: relative;
+    z-index: 10100;
+}
+.mobile-nav-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+    border-radius: 2px;
+    position: absolute;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.mobile-nav-toggle span:nth-child(1) { top: 0; }
+.mobile-nav-toggle span:nth-child(2) { top: 9px; }
+.mobile-nav-toggle span:nth-child(3) { top: 18px; }
+
+.mobile-nav-toggle.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.mobile-nav-toggle.open span:nth-child(2) { opacity: 0; transform: translateX(10px); }
+.mobile-nav-toggle.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+/* MICRO-DROPDOWN MENU SYSTEM */
+.mobile-dropdown {
+    position: fixed;
+    top: 85px; 
+    right: 30px; 
+    width: 180px; 
+    background-color: rgba(252, 252, 252, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 10050; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.mobile-dropdown.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.mobile-dropdown .nav-link {
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    color: #000;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    transition: 0.2s;
+}
+.mobile-dropdown .nav-link.active { 
+    background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* MOBILE VECTOR FOOTER LAYER */
+.mobile-footer-icons { display: none; gap: 16px; align-items: center; }
+.mobile-footer-icons a { display: flex; align-items: center; justify-content: center; transition: 0.3s; color: #000; text-decoration: none; }
+.mobile-contra-txt {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    line-height: 1;
+}
+
+/* 3. MAIN WORK PAGE CONTENT */
+.page-content { 
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 160px 60px 140px 60px;
+    display: block;
+}
+.work-intro { margin-bottom: 50px; }
+.work-intro h1 { font-family: 'Montserrat'; font-weight: 800; font-size: 3.2rem; text-transform: uppercase; letter-spacing: -1.5px; text-align: center; }
+.accent-gradient { background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+.portfolio-container { width: 100%; max-width: 1700px; padding: 0; display: flex; justify-content: center; align-items: flex-start; gap: 25px; }
+.folder-unit { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 25px; min-width: 0; }
+
+.folder-label { background: none; border: none; font-family: 'Montserrat'; font-weight: 700; font-size: 0.75rem; cursor: pointer; color: #aaa; transition: 0.3s ease; text-transform: uppercase; letter-spacing: 0.12em; padding: 5px 10px; }
+/* Add this after your .folder-label styles */
+.folder-label {
+    background: none; border: none; font-family: 'Montserrat'; font-weight: 700; 
+    font-size: 0.75rem; cursor: pointer; color: #aaa; transition: 0.3s ease; 
+    text-transform: uppercase; letter-spacing: 0.12em; padding: 5px 10px; 
+    transform: translateY(0);
+}
+
+/* FIX: Heading reacts when box is hovered */
+.folder-label.remote-active {
+    color: #000;
+    transform: translateY(-4px);
+}
+
+/* Make box react when heading is hovered */
+.work-card.remote-hover {
+    transform: translateY(-20px) scale(1.08);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+.work-card.remote-hover .work-info {
+    opacity: 1;
+}
+.work-card.remote-hover h3 {
+    transform: translateY(0);
+}
+.work-card { width: 100%; position: relative; aspect-ratio: 1.3 / 1; background: #f0f0f0; border-radius: 18px; overflow: hidden; cursor: pointer; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.6s ease; }
+.work-card img { width: 100%; height: 100%; object-fit: cover; }
+.work-info { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; opacity: 0; transition: 0.4s ease; z-index: 5; }
+.work-info h3 { color: #fff; font-family: 'Montserrat'; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; transform: translateY(20px); transition: 0.5s; }
+
+/* 4. GALLERY OVERLAY */
+#gallery-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(252, 252, 252, 0.99); z-index: 15000; display: none; opacity: 0; transition: opacity 0.4s; overflow-y: auto; padding: 40px 30px; }
+.gallery-header { max-width: 1850px; margin: 0 auto 30px auto; display: flex; justify-content: space-between; align-items: center; padding-top: 20px; position: relative;}
+.gallery-title { font-family: 'Montserrat'; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+.close-gallery-x { width: 45px; height: 45px; background: #000; color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 1.2rem; font-weight: 800; transition: 0.3s; z-index: 10; }
+
+.masonry-grid { max-width: 1400px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+.masonry-item { flex: 0 1 calc(33.333% - 20px); min-width: 300px; height: 380px; border-radius: 12px; overflow: hidden; background: #eee; cursor: pointer; position: relative; transition: 0.5s; opacity: 1; }
+.masonry-grid.blast-mode { max-width: 1850px; gap: 12px; }
+.masonry-grid.blast-mode .masonry-item { 
+    flex: 0 1 calc(11.11% - 12px); 
+    min-width: 160px; height: 180px; 
+    border: 1.5px solid transparent; 
+    background-image: linear-gradient(#fff, #fff), linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+    background-origin: border-box; background-clip: padding-box, border-box; border-radius: 12px;
+}
+
+.masonry-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+.item-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%); display: flex; align-items: flex-end; padding: 15px; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 2; }
+.item-overlay span { color: #fff; font-family: 'Montserrat'; font-weight: 700; font-size: 0.65rem; text-transform: uppercase; }
+
+/* 5. LIGHTBOX & ZOOM */
+#lightbox { 
+    position: fixed; inset: 0; width: 100%; height: 100%; 
+    background: rgba(0, 0, 0, 0.4); z-index: 20000; 
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+    opacity: 0; transition: 0.3s; backdrop-filter: blur(25px); 
+    cursor: pointer; 
+}
+#lightbox.active { opacity: 1; }
+#lightbox.special-mode { 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.focus-wrap { position: relative; display: flex; justify-content: center; align-items: center; cursor: default; }
+
+#zoom-img { 
+    max-width: 92vw; max-height: 88vh; border-radius: 12px; box-shadow: 0 40px 100px rgba(0,0,0,0.5); 
+    transition: transform 0.3s ease; cursor: zoom-in; 
+    transform-origin: center center;
+    touch-action: none;
+}
+
+.close-zoom-x { 
+    position: fixed; top: 40px; right: 40px; width: 50px; height: 50px; 
+    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); color: #000; 
+    border-radius: 50%; display: flex; justify-content: center; align-items: center; 
+    cursor: pointer; font-size: 1.2rem; font-weight: 800; transition: 0.3s; 
+    z-index: 50000; opacity: 0; transform: scale(0); box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+}
+#lightbox.active .close-zoom-x { opacity: 1; transform: scale(1); }
+
+.scroll-arrow {
+    position: fixed;
+    width: 55px;
+    height: 55px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-weight: 800;
+    transition: 0.3s;
+    z-index: 50001;
+    opacity: 0;
+    visibility: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: arrowPulseMobile 2s ease-in-out infinite;
+}
+
+@keyframes arrowPulseMobile {
+    0%, 100% { transform: translateX(-50%) scale(1); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    50% { transform: translateX(-50%) scale(1.08); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+}
+
+@keyframes projectFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* MSG OVERLAY */
+#msg-overlay {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px);
+    z-index: 25000; display: none; justify-content: center; align-items: center;
+    opacity: 0; transition: 0.4s;
+}
+#msg-overlay.active { opacity: 1; }
+.msg-box {
+    background: #fff; padding: 50px 40px; border-radius: 20px;
+    text-align: center; max-width: 400px; transform: scale(0.9); transition: 0.4s;
+}
+#msg-overlay.active .msg-box { transform: scale(1); }
+.msg-box h2 { font-family: 'Montserrat'; font-weight: 800; font-size: 2rem; margin-bottom: 15px; }
+.msg-box p { font-family: 'Montserrat'; font-weight: 600; font-size: 0.8rem; color: #666; margin-bottom: 30px; }
+.msg-close-btn {
+    font-family: 'Montserrat'; font-weight: 800; font-size: 0.75rem;
+    background: #000; color: #fff; border: none; padding: 14px 32px;
+    border-radius: 50px; cursor: pointer; text-transform: uppercase;
+}
+
+/* SPECIAL GALLERY - DESKTOP BASE */
+.special-gallery-container {
+    display: none; 
+    width: 100%; height: 100%;
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 50vw;
+}
+#lightbox.special-mode .special-gallery-container { 
+    display: grid;
+    place-items: center;
+}
+.special-gallery-content { 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    gap: 60px; 
+    width: max-content;
+    padding: 60px 5vw;
+}
+.special-gallery-container img {
+    max-height: calc(100vh - 160px); 
+    width: auto; 
+    border-radius: 10px; 
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4); 
+    object-fit: contain; 
+    cursor: zoom-in; 
+    transition: transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+    scroll-snap-align: center; 
+    flex-shrink: 0;
+}
+.brand-cta {
+    font-family: 'Montserrat'; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; 
+    letter-spacing: 2px; background: #fff; color: #000; padding: 20px 40px; border-radius: 50px; 
+    text-decoration: none; transition: 0.4s; border: 2px solid #fff; flex-shrink: 0;
+    margin-left: 40px; margin-right: 150px; cursor: pointer;
+}
+
+/* Only run hover effects on devices that actually hover */
+@media (hover: hover) {
+    .header-logo:hover img { transform: scale(1.15) rotate(360deg); }
+    .work-card:hover { transform: translateY(-20px) scale(1.08); box-shadow: 0 40px 80px rgba(0,0,0,0.15); z-index: 10; }
+    .work-card:hover .work-info { opacity: 1; }
+    .work-card:hover h3 { transform: translateY(0); }
+    .masonry-item:hover img { transform: scale(1.1); }
+    .masonry-item:hover .item-overlay { opacity: 1; }
+    .close-gallery-x:hover { transform: scale(1.1) rotate(90deg); }
+    .folder-label:hover { color: #000; }
+    .footer-socials .nav-link:not(.cta-link):hover { opacity: 0.6; }
+    .footer-socials .cta-link:hover { opacity: 1 !important; transform: translateY(-2px); }
+    nav .nav-link:hover {
+        background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .mobile-dropdown .nav-link:hover {
+        background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+}
+
+/* Desktop arrow position */
+@media (min-width: 769px) {
+    .scroll-arrow {
+        bottom: auto;
+        top: 50%;
+        right: 40px;
+        left: auto;
+        transform: translateY(-50%);
+        animation: arrowPulseDesktop 2s ease-in-out infinite;
+    }
+    @keyframes arrowPulseDesktop {
+        0%, 100% { transform: translateY(-50%) scale(1); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        50% { transform: translateY(-50%) scale(1.08); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+    }
+}
+
+/* ULTRA-RESPONSIVE ENGINE SYSTEM */
+@media (max-width: 768px) {
+    header { 
+        top: 0; padding: 24px 30px 18px 30px; 
+        border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    }
+    footer { 
+        bottom: 0; padding: 18px 30px 24px 30px; 
+        border-top: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    nav { display: none; }
+    .mobile-nav-toggle { display: block; }
+    .footer-socials { display: none; }
+    .mobile-footer-icons { display: flex; }
+    .copyright { font-family: 'Montserrat', sans-serif; font-size: 0.52rem; opacity: 0.5; }
+
+    .page-content { padding: 120px 24px 120px 24px; }
+    .work-intro { margin-top: 10px; margin-bottom: 35px; }
+    .work-intro h1 { font-size: 2.1rem; letter-spacing: -0.8px; }
+
+    .portfolio-container { flex-direction: column; align-items: center; gap: 30px; padding-bottom: 40px; }
+    .folder-unit { width: 100%; max-width: 480px; gap: 12px; }
+    .folder-label { font-size: 0.7rem; color: #555; }
+    .work-card { aspect-ratio: 1.4 / 1; border-radius: 14px; }
+    .work-info { opacity: 1; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 70%); }
+    .work-info h3 { transform: translateY(0); font-size: 0.7rem; }
+
+    .item-overlay { 
+        opacity: 1; 
+        height: auto;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+        padding: 12px;
+        pointer-events: none;
+    }
+    .item-overlay span { font-size: 0.6rem; }
+
+    .close-zoom-x { top: 20px; right: 20px; width: 40px; height: 40px; font-size: 1rem; }
+    .gallery-header { padding-top: 10px; }
+    .gallery-title { font-size: 1.3rem; }
+    .close-gallery-x { width: 38px; height: 38px; font-size: 1rem; }
+    #gallery-overlay { padding: 30px 20px; }
+    .masonry-grid.blast-mode .masonry-item { flex: 0 1 calc(33.33% - 12px); min-width: 90px; height: 110px; }
+
+    /* MOBILE VERTICAL GALLERY OVERRIDES */
+    .special-gallery-container {
+        overflow-x: hidden;
+        overflow-y: auto;
+        white-space: normal;
+        padding: 0 5%;
+        height: 100%;
+        scroll-snap-type: y proximity;
+        scroll-padding: 60px;
+    }
+    #lightbox.special-mode .special-gallery-container { display: block; }
+    .special-gallery-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        width: 100%;
+        padding: 70px 0;
+    }
+    .special-gallery-container img {
+        max-height: 65vh;
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        scroll-snap-align: start;
+        display: block;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        background: transparent;
+        margin: 2vh 0;
+    }
+    .brand-cta {
+        display: block;
+        margin: 0 auto;
+        scroll-snap-align: start;
+        padding: 14px 28px; 
+        font-size: 0.7rem; 
+        text-align: center;
+        width: fit-content;
+    }
+}
+
+/* TABLET & INTERMEDIATE MEDIA VIEWPORTS */
+@media (min-width: 769px) and (max-width: 1100px) {
+    header { top: 0; padding: 30px 40px 20px 40px; }
+    footer { bottom: 0; padding: 20px 40px 30px 40px; }
+    .page-content { padding: 160px 40px 140px 40px; }
+    .portfolio-container { flex-direction: column; align-items: center; gap: 35px; padding-bottom: 50px; }
+    .folder-unit { width: 100%; max-width: 680px; gap: 15px; }
+    .work-card { aspect-ratio: 1.5 / 1; }
+    .masonry-grid.blast-mode .masonry-item { flex: 0 1 calc(20% - 12px); }
+}
+</style>
+</head>
+<body>
+<header>
+    <div class="ui-constraint">
+        <a href="index.html" class="header-logo"><img src="purekid! LogoP.png" alt="purekid!"></a>
+        <nav>
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="work.html" class="nav-link active">Work</a>
+            <a href="services.html" class="nav-link">Services</a>
+            <a href="aboutme.html" class="nav-link">About Me</a>
+            <a href="reviews.html" class="nav-link">Reviews</a>
+        </nav>
+        <button class="mobile-nav-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</header>
+
+<div class="mobile-dropdown" id="mobile-menu">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="work.html" class="nav-link active">Work</a>
+    <a href="services.html" class="nav-link">Services</a>
+    <a href="aboutme.html" class="nav-link">About Me</a>
+    <a href="reviews.html" class="nav-link">Reviews</a>
+</div>
+
+<div class="page-content">
+    <section class="work-intro">
+        <h1>Projects & <span class="accent-gradient">Creations</span></h1>
+    </section>
+
+    <main class="portfolio-container">
+        <div class="folder-unit">
+            <button id="btn-all" class="folder-label" onclick="openGallery('All Projects')">All Projects</button>
+            <div id="rect-all" class="work-card" onclick="openGallery('All Projects')">
+                <img src="purekid! Logo1.png" alt="All Projects Preview">
+                <div class="work-info"><h3>All Projects</h3></div>
+            </div>
+        </div>
+        <div class="folder-unit">
+            <button id="btn-logos" class="folder-label" onclick="openGallery('Logos & Brand Identity')">Logos & Brand Identity</button>
+            <div id="rect-logos" class="work-card" onclick="openGallery('Logos & Brand Identity')">
+                <img src="Dyron Aurum.jpg" alt="Logos & Brand Identity Preview">
+                <div class="work-info"><h3>Logos & Brand Identity</h3></div>
+            </div>
+        </div>
+        <div class="folder-unit">
+            <button id="btn-comm" class="folder-label" onclick="openGallery('Commercials & Advertising')">Commercials & Advertising</button>
+            <div id="rect-comm" class="work-card" onclick="openGallery('Commercials & Advertising')">
+                <img src="CC Slash Sales.jpg" alt="Commercials & Advertising Preview">
+                <div class="work-info"><h3>Commercials & Advertising</h3></div>
+            </div>
+        </div>
+        <div class="folder-unit">
+            <button id="btn-other" class="folder-label" onclick="openGallery('Other Creative Designs')">Other Creative Designs</button>
+            <div id="rect-other" class="work-card" onclick="openGallery('Other Creative Designs')">
+                <img src="Man O' War.jpg" alt="Other Creative Designs Preview">
+                <div class="work-info"><h3>Other Creative Designs</h3></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="msg-overlay">
+    <div class="msg-box">
+        <h2>COMING <span class="accent-gradient">SOON</span></h2>
+        <p>STAY TUNED • PUREKID! IS COOKING</p>
+        <button class="msg-close-btn" onclick="closeMsgOverlay()">Return</button>
+    </div>
+</div>
+
+<div id="gallery-overlay">
+    <div class="gallery-header">
+        <h2 class="gallery-title" id="gallery-title-text">Category</h2>
+        <div class="close-gallery-x" onclick="closeGallery()">✕</div>
+    </div>
+    <div class="masonry-grid" id="masonry-content"></div>
+</div>
+
+<div id="lightbox" onclick="closeZoom(event)">
+    <div class="close-zoom-x" onclick="closeZoom(event)">✕</div>
+    <div class="scroll-arrow" id="hint">➔</div>
+    <div class="focus-wrap" id="zoom-wrap">
+        <img id="zoom-img" src="" alt="" onclick="handleImageTap(event, this); event.stopPropagation();" ontouchend="handleTouchEnd(event); handleImageTap(event, this); event.stopPropagation();" ontouchstart="handleTouchStart(event)" ontouchmove="handleTouchMove(event)">
+    </div>
+    <div id="special-content" class="special-gallery-container" onscroll="handleGalleryScroll()" onclick="event.stopPropagation()"></div>
+</div>
+
+<footer>
+    <div class="ui-constraint">
+        <div class="copyright">© 2026 PUREKID DESIGNS</div>
+        <div class="footer-socials">
+            <a href="https://www.tiktok.com/@purekid" target="_blank" class="nav-link">TIKTOK</a>
+            <a href="https://wa.me/2347039864664" target="_blank" class="nav-link">WHATSAPP</a>
+            <a href="mailto:purekiddesigns@gmail.com" class="nav-link">EMAIL</a>
+            <a href="https://contra.com/purekiddesigns" target="_blank" class="nav-link cta-link">CONTRA</a>
+        </div>
+        <div class="mobile-footer-icons">
+                <a href="https://www.tiktok.com/@purekid" target="_blank" aria-label="TikTok">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                </a>
+                <a href="https://wa.me/2347039864664" target="_blank" aria-label="WhatsApp">
+                    <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+                        <path d="M16 2a13.93 13.93 0 0 0-12.09 20.89l-1.83 6.69 6.84-1.79A13.88 13.88 0 0 0 16 30c7.69 0 14-6.31 14-14S23.69 2 16 2zm0 25.66a11.66 11.66 0 0 1-5.94-1.62l-.42-.25-4.09 1.07 1.1-4-0.27-.43A11.72 11.72 0 1 1 16 27.66zm6.42-8.73c-.35-.18-2.08-1-2.4-.12-.32-.11-.56-.18-.81.18s-.94 1.17-1.15 1.4-.42.25-.77.07a9.75 9.75 0 0 1-2.88-1.78 10.77 10.77 0 0 1-2-2.48c-.21-.36 0-.55.15-.73l.47-.55c.18-.21.25-.36.36-.57a.64.64 0 0 0 0-.57c-.07-.18-.57-1.37-.78-1.88-.2-.5-.41-.42-.56-.43h-.48a1 1 0 0 0-.68.32 2.87 2.87 0 0 0-.9 2.13 5 5 0 0 0 1 2.65 11.39 11.39 0 0 0 4.35 3.85c1 .43 1.84.69 2.48.89a6 6 0 0 0 2.75.17 3.39 3.39 0 0 0 2.22-1.57 2.77 2.77 0 0 0 .19-1.57c-.06-.11-.23-.18-.58-.36z"/>
+                    </svg>
+                </a>
+                <a href="mailto:purekiddesigns@gmail.com" aria-label="Email">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </a>
+                <a href="https://contra.com/purekiddesigns" target="_blank" aria-label="Contra" class="mobile-contra-txt">
+                    CONTRA
+                </a>
+        </div>
+    </div>
+</footer>
+
+<script>
+// NAVIGATION SYSTEM TARGETS
+const menuToggle = document.getElementById('menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+const dropdownLinks = mobileMenu.querySelectorAll('.nav-link');
+
+menuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menuToggle.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+});
+
+dropdownLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        menuToggle.classList.remove('open');
+        mobileMenu.classList.remove('open');
+    });
+});
+
+document.addEventListener('click', (e) => {
+    const isClickInsideMenu = mobileMenu.contains(e.target);
+    const isClickInsideToggle = menuToggle.contains(e.target);
+    if (mobileMenu.classList.contains('open') &&!isClickInsideMenu &&!isClickInsideToggle) {
+        menuToggle.classList.remove('open');
+        mobileMenu.classList.remove('open');
+    }
+});
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        menuToggle.classList.remove('open');
+        mobileMenu.classList.remove('open');
+    }
+});
+
+// WORK ENGINE DATA STRUCTURES
+const specialProjects = {
+    "purekid! Logo1.png": {
+        images: ["purekid! Logo1.png"],
+        isFullIdentity: true,
+        customTitle: "purekid!",
+        pdf: "purekid! Brand Identity.pdf",
+        ctaText: "View Brand Identity"
+    },
+    "Dyron Aurum.jpg": {
+        images: ["Dyron Aurum.jpg", "Dyron Aurum1.jpg", "Dyron Aurum2.jpg", "Dyron Aurum3.jpg"],
+        isFullIdentity: true,
+        pdf: "Dyron Aurum Brand Guidelines.pdf",
+        ctaText: "View Brand Identity"
+    },
+    "Mr. Peas Logo.jpg": {
+        images: ["Mr. Peas Logo.jpg", "Mr Peas Chinchin.jpg", "Mr Peas Chinchin 1.jpg", "Mr Peas Chinchin 2.jpg"],
+        isFullIdentity: true,
+        customTitle: "MR PEAS",
+        pdf: "Mr. Peas Brand Guidelines.pdf",
+        ctaText: "View Brand Identity"
+    },
+    "LYFT Airlines Asset 9.png": {
+        images: [
+            "LYFT Airlines Logo.png",
+            "LYFT Airlines Asset 1.png",
+            "LYFT Airlines Asset 2.png",
+            "LYFT Airlines Asset 3.png",
+            "LYFT Airlines Asset 4.png",
+            "LYFT Airlines Asset 5.png",
+            "LYFT Airlines Asset 6.png",
+            "LYFT Airlines Asset 7.png",
+            "LYFT Airlines Asset 8.png",
+            "LYFT Airlines Asset 9.png"
+        ],
+        isFullIdentity: true,
+        customTitle: "LYFT AIRLINES"
+    }
+};
+
+const projectData = {
+    "All Projects": [
+        "Ade Super Pool Party.jpg", "Adebowale P Money.jpg", "AEDF Quiz.jpg", "AEDF Quiz1.jpg",
+        "Ajoke 1.jpg", "Ajoke.jpg", "Amarya.jpg", "BANS.jpg", "Beulah Tasty Treats.jpg",
+        "Sir Tom's Baby.jpg", "Big Steps 1.jpg", "Big Steps.jpg",
+        "Boulevard.png", "BuzzWire.png", "CC Slash Sales.jpg", "Christiana.png",
+        "Corporate Closet Logo.png", "Creative Empire1.jpg", "Dubai 1.jpg", "Dubai.jpg",
+        "Dyron Aurum.jpg", "Easter2026 1.jpg", "Easter2026 2.jpg", "Easter2026.jpg",
+        "Father's Day.jpg", "Felix Aprilis.jpg", "Fitness Saturday.jpg", "Fiverr Gig Image.png",
+        "Formab Hair.jpg", "Happy Sunday.png", "Hell and Heaven.jpg", "Hello July.jpg",
+        "Helping Hands.png", "HNTGAF.jpg", "Hon. Akinwale Fredrick.jpg", "Honourable Akinwale Fredrick.jpg",
+        "Hosanna Call for Support.png", "Hosanna Main Flyer.png", "JBL.jpg", "Jean Sunday.jpg",
+        "Jersey Sunday.jpg", "Julie's Confectionery.jpg", "July Thanksgiving.jpg",
+        "King of the Streets.jpg", "Kruger's Burger.jpg", "LAMMY.png", "Lamz Innovations.png",
+        "Light Walker.jpg", "Look Up.jpg", "LYFT Airlines Logo.png", "LYFT Airlines Asset 9.png",
+        "Man O' War1.jpg", "Man O' War.jpg", "May.png",
+        "Miracle.jpg", "Movie Night.jpg", "Mr. Peas Logo.jpg", "Need For Speed.jpg",
+        "Night of Worship.jpg", "Nightlife Lagos 1.jpg", "Nightlife Lagos.jpg", "Nike.jpg",
+        "NYSC.jpg", "October Youth Sunday.jpg", "OG Dyron.jpg", "Olamide's Comp Card.png",
+        "Older vs Gen Z.png", "OMF FC.jpg", "Para Mode.jpg", "Photo.png",
+        "Police and Thief.jpg", "Pool Party 24.png", "Power Youth Family.jpg",
+        "Princess Folakemi.png", "purekid! Logo1.png", "Purekid!.png", "Queens Royal Touch.jpg",
+        "Rant With Liz.png", "Rihanna.jpg", "Sabr1.png", "Sabr.png", "Sir Tom.jpg",
+        "Steeze New Week.png", "Steeze Midweek.png", "Steeze Wekend.png",
+        "Sunday School.png", "The Decider.jpg", "Timopraise Logo.png", "Toyota Supra.jpg",
+        "Visit Lagos.jpg", "WCF FYB.jpg", "Wedding IV.jpg", "Welcome to October.jpg",
+        "YAYA Connect.jpg", "YC 2 days to go.jpg", "YC 3 days to go.jpg",
+        "YC 4 days to go.jpg", "YC 5 days to go.jpg", "YC D-Day.jpg", "YC Meet the Speaker.jpg"
+    ],
+    "Logos & Brand Identity": [
+        "purekid! Logo1.png", "Dyron Aurum.jpg", "Mr. Peas Logo.jpg",
+        "Boulevard.png", "BuzzWire.png", "Corporate Closet Logo.png",
+        "Creative Empire1.jpg", "Helping Hands.png", "LYFT Airlines Logo.png", "OMF FC.jpg",
+        "Photo.png", "Rant With Liz.png", "Sabr1.png", "Sabr.png", "Timopraise Logo.png"
+    ],
+    "Commercials & Advertising": [
+        "Ade Super Pool Party.jpg", "Adebowale P Money.jpg", "AEDF Quiz.jpg", "AEDF Quiz1.jpg",
+        "Amarya.jpg", "Beulah Tasty Treats.jpg", "Sir Tom's Baby.jpg", "CC Slash Sales.jpg",
+        "Christiana.png", "Fitness Saturday.jpg", "Fiverr Gig Image.png", "Formab Hair.jpg",
+        "Hon. Akinwale Fredrick.jpg", "Honourable Akinwale Fredrick.jpg", "Hosanna Call for Support.png",
+        "Hosanna Main Flyer.png", "Jersey Sunday.jpg", "Julie's Confectionery.jpg",
+        "July Thanksgiving.jpg", "LAMMY.png", "Lamz Innovations.png", "Miracle.jpg",
+        "Movie Night.jpg", "October Youth Sunday.jpg", "OG Dyron.jpg", "Olamide's Comp Card.png",
+        "Older vs Gen Z.png", "Pool Party 24.png", "Power Youth Family.jpg",
+        "Princess Folakemi.png", "Queens Royal Touch.jpg", "Sir Tom.jpg",
+        "Sunday School.png", "WCF FYB.jpg", "YAYA Connect.jpg",
+        "YC 2 days to go.jpg", "YC 3 days to go.jpg", "YC 4 days to go.jpg", "YC 5 days to go.jpg",
+        "YC D-Day.jpg", "YC Meet the Speaker.jpg"
+    ],
+    "Other Creative Designs": [
+        "Ajoke 1.jpg", "Ajoke.jpg", "BANS.jpg", "Big Steps 1.jpg", "Big Steps.jpg",
+        "Dubai 1.jpg", "Dubai.jpg", "Easter2026 1.jpg", "Easter2026 2.jpg", "Easter2026.jpg",
+        "Father's Day.jpg", "Felix Aprilis.jpg", "Happy Sunday.png", "Hell and Heaven.jpg",
+        "Hello July.jpg", "HNTGAF.jpg", "JBL.jpg", "Jean Sunday.jpg", "King of the Streets.jpg",
+        "Kruger's Burger.jpg", "Light Walker.jpg", "Look Up.jpg", "LYFT Airlines Asset 9.png",
+        "Man O' War1.jpg", "Man O' War.jpg", "May.png", "Need For Speed.jpg", "Night of Worship.jpg",
+        "Nightlife Lagos 1.jpg", "Nightlife Lagos.jpg", "Nike.jpg", "NYSC.jpg",
+        "Para Mode.jpg", "Police and Thief.jpg", "Purekid!.png", "Rihanna.jpg",
+        "Steeze New Week.png", "Steeze Midweek.png", "Steeze Wekend.png",
+        "The Decider.jpg", "Toyota Supra.jpg", "Visit Lagos.jpg", "Wedding IV.jpg",
+        "Welcome to October.jpg"
+    ]
+};
+
+function sanitizeTitle(f) {
+    if (f === "Steeze Wekend.png") return "STEEZE WEEKEND";
+    if (f === "Sir Tom's Baby.jpg") return "BABY CHRISTENING";
+    if (f.startsWith("LYFT Airlines")) return "LYFT AIRLINES";
+
+    let baseName = f.split('.')[0]
+    .replace(/\(\d+\)/g, '')
+    .replace(/\d+$/, '')
+    .replace(/\sLogo$/i, '')
+    .trim();
+    if (f.startsWith("Mr. Peas")) baseName = "MR PEAS";
+    if (specialProjects[f]) {
+        if (specialProjects[f].customTitle) baseName = specialProjects[f].customTitle;
+        if (specialProjects[f].isFullIdentity) return baseName.toUpperCase() + " | FULL BRAND IDENTITY";
+    }
+    return baseName;
+}
+
+async function checkFileAndOpen(e, url) {
+    e.preventDefault();
+    try {
+        const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+        if (response.ok) { window.open(url, '_blank'); return; }
+    } catch (error) { console.log("Fetch Check Failed."); }
+    openMsgOverlay();
+}
+
+function openMsgOverlay() {
+    const overlay = document.getElementById('msg-overlay');
+    overlay.style.display = 'flex';
+    setTimeout(() => overlay.classList.add('active'), 10);
+}
+
+function closeMsgOverlay() {
+    const overlay = document.getElementById('msg-overlay');
+    overlay.classList.remove('active');
+    setTimeout(() => overlay.style.display = 'none', 500);
+}
+
+function openGallery(cat) {
+    const overlay = document.getElementById('gallery-overlay');
+    const content = document.getElementById('masonry-content');
+    overlay.scrollTop = 0;
+    content.scrollTop = 0;
+
+    document.getElementById('gallery-title-text').innerText = cat;
+    content.innerHTML = "";
+    content.classList.add('blast-mode');
+    if (projectData[cat]) {
+        projectData[cat].forEach((img, i) => {
+            const item = document.createElement('div');
+            item.className = 'masonry-item';
+            item.style.animation = `projectFadeIn 0.4s forwards ${i * 0.02}s`;
+            const escapedImg = img.replace(/'/g, "\\'");
+            item.innerHTML = `<img src="${img}" onclick="zoomImage('${escapedImg}')"><div class="item-overlay"><span>${sanitizeTitle(img)}</span></div>`;
+            content.appendChild(item);
+        });
+    }
+    overlay.style.display = "block";
+    setTimeout(() => overlay.style.opacity = "1", 10);
+}
+
+function closeGallery() {
+    const o = document.getElementById('gallery-overlay');
+    o.style.opacity = "0"; setTimeout(() => o.style.display = "none", 400);
+}
+
+function zoomImage(s) {
+    const lb = document.getElementById('lightbox');
+    const spec = document.getElementById('special-content');
+    const arrow = document.getElementById('hint');
+
+    arrow.style.opacity = "0";
+    arrow.style.visibility = "hidden";
+
+    if (specialProjects[s] && specialProjects[s].isFullIdentity) {
+        const project = specialProjects[s];
+        lb.classList.add('special-mode');
+        spec.scrollLeft = 0;
+        spec.scrollTop = 0;
+
+        if (window.innerWidth <= 768) {
+            arrow.innerHTML = '↓';
+        } else {
+            arrow.innerHTML = '➔';
+        }
+
+        let galleryHTML = `<div class="special-gallery-content">`;
+        project.images.forEach(img => {
+            galleryHTML += `<img src="${img}" onclick="handleImageTap(event, this)" ontouchend="handleImageTap(event, this)" ontouchstart="handleTouchStart(event)" ontouchmove="handleTouchMove(event)">`;
+        });
+        if (project.pdf) {
+            galleryHTML += `<a href="${project.pdf}" onclick="checkFileAndOpen(event, this.href)" class="brand-cta">${project.ctaText || 'View Details'}</a>`;
+        }
+        galleryHTML += `</div>`;
+        spec.innerHTML = galleryHTML;
+
+        setTimeout(() => {
+            const arrow = document.getElementById('hint');
+            const pdfButton = spec.querySelector('.brand-cta');
+            const images = spec.querySelectorAll('.special-gallery-content img');
+            const lastImage = images[images.length - 1];
+            const scrollTarget = pdfButton || lastImage;
+
+            if (arrow && scrollTarget && images.length > 1) {
+                arrow.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    scrollTarget.scrollIntoView({
+                        behavior: 'smooth',
+                        block: window.innerWidth <= 768? 'start' : 'end',
+                        inline: window.innerWidth <= 768? 'nearest' : 'end'
+                    });
+                };
+
+                const targetRect = scrollTarget.getBoundingClientRect();
+                const containerRect = spec.getBoundingClientRect();
+                const isAlreadyVisible = window.innerWidth <= 768
+               ? targetRect.top < containerRect.bottom && targetRect.bottom > containerRect.top
+                    : targetRect.left < containerRect.right && targetRect.right > containerRect.left;
+
+                if (!isAlreadyVisible) {
+                    arrow.style.opacity = '0.95';
+                    arrow.style.visibility = 'visible';
+                }
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            arrow.style.opacity = '0';
+                            arrow.style.pointerEvents = 'none';
+                        } else {
+                            arrow.style.opacity = '0.95';
+                            arrow.style.pointerEvents = 'auto';
+                        }
+                    });
+                }, {
+                    root: spec,
+                    threshold: 0.3
+                });
+
+                observer.observe(scrollTarget);
+                spec._arrowObserver = observer;
+            }
+        }, 100);
+
+    } else {
+        lb.classList.remove('special-mode');
+        document.getElementById('zoom-img').src = s;
+    }
+
+    lb.style.display = 'flex';
+    setTimeout(() => lb.classList.add('active'), 10);
+}
+
+let deepZoomed = false;
+let activeZoomImg = null;
+let lastTap = 0;
+let tapTimer = null;
+let startX = 0, startY = 0;
+let currentX = 0, currentY = 0;
+let isDragging = false;
+
+// FIX: Single click zoom on desktop, double tap on mobile
+function handleImageTap(e, targetImg) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const isMobile = window.matchMedia('(hover: none)').matches || 'ontouchstart' in window;
+    
+    // Desktop: single click = zoom immediately
+    if (!isMobile) {
+        if (deepZoomed) {
+            exitZoom();
+        } else {
+            toggleDeepZoom(e, targetImg);
+        }
+        return;
+    }
+
+    // Mobile: double tap logic
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+    lastTap = currentTime;
+
+    if (isDragging) {
+        isDragging = false;
+        return;
+    }
+
+    if (deepZoomed) {
+        clearTimeout(tapTimer);
+        exitZoom();
+        return;
+    }
+
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(() => {}, 300);
+
+    if (tapLength < 300 && tapLength > 0) {
+        clearTimeout(tapTimer);
+        toggleDeepZoom(e, targetImg);
+    }
+}
+
+function toggleDeepZoom(e, targetImg) {
+    const img = targetImg || document.getElementById('zoom-img');
+
+    deepZoomed = true;
+    activeZoomImg = img;
+    img.style.transition = 'transform 0.3s ease';
+    img.style.transform = 'scale(2.5)';
+    img.style.cursor = 'grab';
+    img.style.touchAction = 'none';
+    currentX = 0;
+    currentY = 0;
+
+    // FIX: Always add mousemove listener for desktop pan
+    window.addEventListener('mousemove', updatePan);
+    img.addEventListener('mousedown', () => img.style.cursor = 'grabbing');
+    img.addEventListener('mouseup', () => img.style.cursor = 'grab');
+    
+    // Set initial transform origin to cursor position on click
+    if (e.type === 'click') {
+        const rect = img.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        img.style.transformOrigin = `${x}% ${y}%`;
+    }
+}
+
+function updatePan(e) {
+    if (!deepZoomed ||!activeZoomImg) return;
+    const rect = activeZoomImg.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    activeZoomImg.style.transformOrigin = `${x}% ${y}%`;
+}
+
+function handleTouchStart(e) {
+    if (!deepZoomed) return;
+    e.stopPropagation();
+    e.preventDefault();
+    const touch = e.touches[0];
+    startX = touch.clientX - currentX;
+    startY = touch.clientY - currentY;
+    activeZoomImg.style.transition = 'none';
+}
+
+function handleTouchMove(e) {
+    if (!deepZoomed ||!activeZoomImg) return;
+    e.stopPropagation();
+    e.preventDefault();
+
+    isDragging = true;
+    const touch = e.touches[0];
+    currentX = touch.clientX - startX;
+    currentY = touch.clientY - startY;
+
+    const maxPan = 200;
+    currentX = Math.max(Math.min(currentX, maxPan), -maxPan);
+    currentY = Math.max(Math.min(currentY, maxPan), -maxPan);
+
+    activeZoomImg.style.transform = `scale(2.5) translate(${currentX}px, ${currentY}px)`;
+}
+
+function handleTouchEnd(e) {
+    if (!deepZoomed) return;
+    e.stopPropagation();
+    activeZoomImg.style.transition = 'transform 0.3s ease';
+    setTimeout(() => { isDragging = false; }, 50);
+}
+
+function exitZoom() {
+    if (!activeZoomImg) return;
+    deepZoomed = false;
+    activeZoomImg.style.transition = 'transform 0.3s ease';
+    activeZoomImg.style.transform = 'scale(1) translate(0, 0)';
+    activeZoomImg.style.transformOrigin = 'center center';
+    activeZoomImg.style.cursor = 'zoom-in';
+    activeZoomImg.style.touchAction = 'auto';
+    activeZoomImg = null;
+    currentX = 0;
+    currentY = 0;
+    window.removeEventListener('mousemove', updatePan);
+}
+
+function closeZoom(e) {
+    if (e) e.stopPropagation();
+    exitZoom();
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('active');
+    setTimeout(() => {
+        lb.style.display = 'none';
+        lb.classList.remove('special-mode');
+        const spec = document.getElementById('special-content');
+        spec.innerHTML = "";
+        if (spec._arrowObserver) {
+            spec._arrowObserver.disconnect();
+            delete spec._arrowObserver;
+            delete spec.dataset.observerActive;
+        }
+        spec.scrollLeft = 0;
+    }, 400);
+}
+
+function handleGalleryScroll() {
+    const arrow = document.getElementById('hint');
+    const container = document.getElementById('special-content');
+    const cta = container.querySelector('.brand-cta');
+
+    if (!cta) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const ctaRect = cta.getBoundingClientRect();
+
+    const isVisible = window.innerWidth <= 768
+   ? ctaRect.top < containerRect.bottom && ctaRect.bottom > containerRect.top
+        : ctaRect.left < containerRect.right && ctaRect.right > containerRect.left;
+
+    if (isVisible) {
+        arrow.style.opacity = "0";
+        arrow.style.visibility = "hidden";
+    } else {
+        arrow.style.opacity = "0.95";
+        arrow.style.visibility = "visible";
+    }
+}
+
+const pairs = [
+    {b:'btn-all', r:'rect-all'},
+    {b:'btn-logos', r:'rect-logos'},
+    {b:'btn-comm', r:'rect-comm'},
+    {b:'btn-other', r:'rect-other'}
+];
+pairs.forEach(p => {
+    const btn = document.getElementById(p.b); const rect = document.getElementById(p.r);
+    if(btn && rect) {
+        btn.addEventListener('mouseenter', () => rect.classList.add('remote-hover'));
+        btn.addEventListener('mouseleave', () => rect.classList.remove('remote-hover'));
+        rect.addEventListener('mouseenter', () => btn.classList.add('remote-active'));
+        rect.addEventListener('mouseleave', () => btn.classList.remove('remote-active'));
+    }
+});
+</script>
+</body>
+</html>
