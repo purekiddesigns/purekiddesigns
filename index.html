@@ -22,7 +22,7 @@
             display: flex; justify-content: center; 
             padding: 0 60px; z-index: 10000; pointer-events: none; 
         }
-        header { top: 50px; } footer { bottom: 50px; }
+        header { top: 50px; } footer { bottom: 30px; }
         .ui-constraint { width: 100%; max-width: 1800px; display: flex; justify-content: space-between; align-items: center; }
         .header-logo, nav, .footer-socials, .copyright, .mobile-nav-toggle, .mobile-footer-icons { pointer-events: auto; }
         
@@ -182,7 +182,20 @@
         .gradient-text.visible { opacity: 1; }
 
         /* 7. DESKTOP FOOTER ARCHITECTURE */
-        .footer-socials .nav-link { font-family: 'Montserrat', sans-serif; text-decoration: none; color: #000; font-size: 0.75rem; font-weight: 600; transition: 0.3s; margin-left: 30px; display: inline-block; }
+        .footer-socials { 
+    display: flex; 
+    align-items: center; 
+}
+.footer-socials .nav-link { 
+    font-family: 'Montserrat', sans-serif; 
+    text-decoration: none; 
+    color: #000; 
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    transition: 0.3s; 
+    margin-left: 30px; 
+    display: inline-block; 
+}
         .footer-socials .nav-link:not(.cta-link):hover { opacity: 0.5; color: #555; -webkit-text-fill-color: initial; background: none; }
         .footer-socials .cta-link { font-weight: 800; transition: 0.3s; }
         .footer-socials .cta-link:hover { transform: translateY(-2px); } 
